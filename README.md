@@ -9,11 +9,14 @@ jQuery-Plugin for HTML Form Validation, including numeric and email types
 
 Installation
 ===========
+
     <script type="text/javascript" src="js/jquery.invalidate.js"></script>
-    
+
+Events
+======
     <form> submit events are registered automatically onDomReady.
     
-    otherwise:
+manual initialization:
     
     $("form").invalidate({
     	... options ...
@@ -21,7 +24,16 @@ Installation
     
 Options
 =======
-See below.
+
+	{
+		'errorFunction'		: null, /* markup function */
+		'successFunction'	: null, /* markup function */
+		'requiredMsg'		: 'Bitte f&uuml;llen Sie das Feld aus!',
+		'invalidMsg'		: 'Bitte geben Sie einen g&uuml;ltigen Wert ein!',
+		'successMsg'		: 'OK',
+		'icons'				: true,
+		'live'				: true
+	}
 
 Customization
 =============
