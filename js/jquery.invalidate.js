@@ -2,19 +2,20 @@
 	$.fn.invalidate = function(options) {
 		var version = "0.2",
 			defaults = {
-			'patterns'			: {
-						"email" : new RegExp(/\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})\b/i), 
-						"url"   : new RegExp(/^http:\/\//),
-						"number": new RegExp(/\d*/)
-			},
-			'errorFunction'		: null, /* markup function */
-			'successFunction'	: null, /* markup function */
-			'requiredMsg'		: 'Bitte f&uuml;llen Sie das Feld aus!',
-			'invalidMsg'		: 'Bitte geben Sie einen g&uuml;ltigen Wert ein!',
-			'successMsg'		: 'OK',
-			'icons'				: true,
-			'live'				: true
-		}
+				'patterns'			: {
+							"email" : new RegExp(/\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})\b/i), 
+							"url"   : new RegExp(/^http:\/\//),
+							"number": new RegExp(/\d*/)
+				},
+				'errorFunction'		: null, /* markup function */
+				'successFunction'	: null, /* markup function */
+				'requiredMsg'		: 'Bitte f&uuml;llen Sie das Feld aus!',
+				'invalidMsg'		: 'Bitte geben Sie einen g&uuml;ltigen Wert ein!',
+				'successMsg'		: 'OK',
+				'icons'				: true,
+				'live'				: true
+			}
+		;
 
 		// Example:
 		// {
