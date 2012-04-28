@@ -27,7 +27,7 @@ jQuery 1.7.2 (current stable - tested)
 
 Changelog
 =========
-Version 0.1
+Version 0.2
 "Cross-browser" Support:
 - input type="[text|password]" [required] [pattern] [minlength] [maxlength] [data-required="Oops! Missing information."] [data-invalid="Invalid information!"]
 - input type="number" [required] [pattern] [minlength] [maxlength] [min] [max] [data-required="Text if required field is missing."] [data-invalid="Text if validation fails."]
@@ -36,3 +36,6 @@ Version 0.1
 - input type="radio" (multiple radio buttons via: see above)
 - input type="password" [required] [pattern] [minlength] [maxlength] [data-required="Text if required field is missing."] [data-invalid="Text if validation fails."]
 - select [required] [pattern] [data-required="Text if required field is missing."] [data-invalid="Text if validation fails."]
+
+Version 0.1
+"initial commit"
