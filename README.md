@@ -7,6 +7,36 @@ Info
 ====
 jQuery-Plugin for HTML Form Validation, including numeric and email types
 
+Installation
+===========
+
+    <script type="text/javascript" src="js/jquery.invalidate.js"></script>
+
+Events
+======
+    <form> submit events are registered automatically onDomReady.
+    
+manual initialization:
+    
+    $("form").invalidate({
+    	... options ...
+    });
+    
+Options
+=======
+
+	{
+		'errorFunction'		: null, /* markup function */
+		'successFunction'	: null, /* markup function */
+		'requiredMsg'		: 'Bitte f&uuml;llen Sie das Feld aus!',
+		'invalidMsg'		: 'Bitte geben Sie einen g&uuml;ltigen Wert ein!',
+		'successMsg'		: 'OK',
+		'icons'				: true,
+		'live'				: true
+	}
+
+Customization
+=============
 Customizable markup functions:
  - the default implementation relies on twitter/bootstrap structure (.control-group .error|.success, span.help-inline .error|.success)
  - callback options: { successFunction: function() { ... }, errorFunction : function() { ... } }
@@ -27,6 +57,10 @@ jQuery 1.7.2 (current stable - tested)
 
 Changelog
 =========
+Version 0.3
+Check for equal elements values, useful for password confirmation
+ - input [rel="OTHER_FIELD"]
+
 Version 0.2
 "Cross-browser" Support:
 - input type="[text|password]" [required] [pattern] [minlength] [maxlength] [data-required="Oops! Missing information."] [data-invalid="Invalid information!"]
