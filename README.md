@@ -29,10 +29,10 @@ Changelog
 =========
 Version 0.1
 "Cross-browser" Support:
-- input type="[text|password]" [required] [pattern] [minlength] [maxlength] [data-required="Oops! Missing information."] [data-validate="Invalid information!"]
-- input type="number" [required] [pattern] [minlength] [maxlength] [min] [max] [data-required="Text if required field is missing."] [data-validate="Text if validation fails."]
+- input type="[text|password]" [required] [pattern] [minlength] [maxlength] [data-required="Oops! Missing information."] [data-invalid="Invalid information!"]
+- input type="number" [required] [pattern] [minlength] [maxlength] [min] [max] [data-required="Text if required field is missing."] [data-invalid="Text if validation fails."]
 - input type="checkbox" [required] [data-required="Please read and accept our general terms and conditions to proceed."]
 - input type="checkbox" (multiple checkboxes via <input type="hidden" name="NAME_OF_CHECKBOXES" [required] [data-required="Please select at least one option."]>
 - input type="radio" (multiple radio buttons via: see above)
-- input type="password" [required] [pattern] [minlength] [maxlength] [data-required="Text if required field is missing."] [data-validate="Text if validation fails."]
-- select [required] [pattern] [data-required="Text if required field is missing."] [data-validate="Text if validation fails."]
+- input type="password" [required] [pattern] [minlength] [maxlength] [data-required="Text if required field is missing."] [data-invalid="Text if validation fails."]
+- select [required] [pattern] [data-required="Text if required field is missing."] [data-invalid="Text if validation fails."]
