@@ -10,8 +10,10 @@ jQuery-Plugin for HTML Form Validation, including numeric and email types
 Customizable markup functions:
  - the default implementation relies on twitter/bootstrap structure (.control-group .error|.success, span.help-inline .error|.success)
  - callback options: { successFunction: function() { ... }, errorFunction : function() { ... } }
- - Example:
-   - {
+
+Example:
+
+    {
       'errorFunction'		: function(msg, $el) {
 		    alert(msg);
 		    $el.focus();
