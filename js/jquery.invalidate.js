@@ -70,6 +70,7 @@
 					maxlength = $el.attr('maxlength') ? parseInt($el.attr('maxlength'), 10) : 0,
 					msg = $el.attr('data-required') ? $el.attr('data-required') : "",
 					pat = $el.attr('pattern') ? $el.attr('pattern') : "",
+					rel = $el.attr('rel') ? $el.attr('rel') : "",
 					type = $el.attr('type') ? $el.attr('type') : "",
 					val = $el.val();
 
@@ -116,6 +117,14 @@
 						return showError("invalid");
 					if (maxlength && val.length > maxlength)
 						return showError("invalid");
+					// rel="" Attribute matching, useful for password confirmation
+					if (rel.length) {
+						log("rel: " + rel);
+						var relEl = $("[name='" + rel + "']", $el.get(0).form);
+						log("relEl.length: " + relEl.length);
+						if (relEl.length && val !== relEl.val())
+							return showError("invalid");
+					}
 					// RegExp
 					if (pat.length)
 						return validate(pat, this);
