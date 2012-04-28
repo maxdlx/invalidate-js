@@ -1,6 +1,6 @@
 (function($) {
 	$.fn.invalidate = function(options) {
-		var version = "0.2",
+		var version = "0.3",
 			defaults = {
 				'patterns'			: {
 							"email" : new RegExp(/\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})\b/i), 
