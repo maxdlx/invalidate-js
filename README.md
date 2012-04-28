@@ -27,6 +27,10 @@ jQuery 1.7.2 (current stable - tested)
 
 Changelog
 =========
+Version 0.3
+Check for equal elements values, useful for password confirmation
+ - input [rel="OTHER_FIELD"]
+
 Version 0.2
 "Cross-browser" Support:
 - input type="[text|password]" [required] [pattern] [minlength] [maxlength] [data-required="Oops! Missing information."] [data-invalid="Invalid information!"]
