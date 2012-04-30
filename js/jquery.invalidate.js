@@ -210,7 +210,7 @@
 						$("[name^='" + name + "']", this.form).on("click", cb);
 					});
 				}
-				$(this).submit(function() {
+				$form.submit(function() {
 					var ret = false;
 					try {
 						ret = validateAll();
