@@ -32,7 +32,7 @@
 				$reqs = $form.find("[required], [pattern], [minlength], [maxlength]");
 
 			function log(msg) {
-				if (! window.console) 
+				if (!window.console || !opts.verbose) 
 					return;
 				
 				if (typeof msg !== "string")
