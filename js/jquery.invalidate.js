@@ -1,6 +1,6 @@
 (function($) {
 	$.fn.invalidate = function(options) {
-		var version = "0.4",
+		var version = "0.5",
 			opts = $.extend({
 				'patterns'			: {
 							"email" : new RegExp(/\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})\b/i), 
@@ -66,11 +66,10 @@
 					max = $el.attr('max') ? parseInt($el.attr('max'), 10) : 0,
 					minlength = $el.attr('minlength') ? parseInt($el.attr('minlength'), 10) : 0,
 					maxlength = $el.attr('maxlength') ? parseInt($el.attr('maxlength'), 10) : 0,
-					msg = $el.attr('data-required') ? $el.attr('data-required') : "",
 					pat = $el.attr('pattern') ? $el.attr('pattern') : "",
 					rel = $el.attr('rel') ? $el.attr('rel') : "",
 					type = $el.attr('type') ? $el.attr('type') : "",
-					val = $el.val();
+					val = $el.val() ? $el.val().trim() : "";
 
 				log("require() called");
 
@@ -148,7 +147,7 @@
 
 				// Match custom RegExp or display validation message for invalid field
 				if (!matches)
-					return showError();
+					return showError("invalid");
 				
 				// Cleanup input
 				if (matches[1])
