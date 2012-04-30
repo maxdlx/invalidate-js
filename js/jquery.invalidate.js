@@ -29,7 +29,7 @@
 		return this.each(function() {
 			var $el, 
 				$form = $(this),
-				$reqs = $form.find("[required], [pattern], [minlength], [maxlength]");
+				$reqs = $form.find("[required], [pattern], [minlength], [maxlength], [min], [max], [rel]");
 
 			function log(msg) {
 				if (!window.console || !opts.verbose) 
