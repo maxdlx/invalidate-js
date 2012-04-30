@@ -13,9 +13,9 @@
 				'invalidMsg'		: 'Bitte geben Sie einen g&uuml;ltigen Wert ein!',
 				'successMsg'		: 'OK',
 				'icons'				: true,
-				'live'				: true,
-				'verbose'			: false
-			}, options);
+				'live'				: true
+			}
+		;
 
 		// Example:
 		// {
@@ -26,12 +26,15 @@
 		// 	'successFunction'	: function() {}
 		// }
 
+		opts = options || {};
+		$.extend(opts, defaults);
+
 		return this.each(function() {
 			var $el, $form = $(this),
-				$reqs = $("[required], [pattern], [minlength], [maxlength]", $el);
+				$reqs = $("[required], [pattern], [minlength], [maxlength]", this);
 
 			function log(msg) {
-				if (!window.console || !opts.verbose) 
+				if (! window.console) 
 					return;
 				
 				if (typeof msg !== "string")
@@ -119,7 +122,7 @@
 						log("rel: " + rel);
 						var relEl = $("[name='" + rel + "']", $el.get(0).form);
 						log("relEl.length: " + relEl.length);
-						if (relEl.length && val !== relEl.val())
+						if (val !== relEl.val())
 							return showError("invalid");
 					}
 					// RegExp
@@ -157,7 +160,9 @@
 
 			function getMessage(type) {
 				var msg = $el.attr("data-" + type) ? $el.attr("data-" + type) : "";
-				return msg.length ? msg : opts[type + "Msg"];
+				log("msg: " + msg);
+				log("type: " + type);
+				return msg && msg.length ? msg : opts[type + "Msg"];
 			}
 
 			function removeFormat() {
