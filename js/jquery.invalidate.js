@@ -72,7 +72,7 @@
 					pat = $el.attr('pattern') ? $el.attr('pattern') : "",
 					rel = $el.attr('rel') ? $el.attr('rel') : "",
 					type = $el.attr('type') ? $el.attr('type') : "",
-					val = $el.val();
+					val = $el.val() ? $el.val().trim() : "";
 
 				log("require() called");
 
