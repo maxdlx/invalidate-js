@@ -1,7 +1,7 @@
 (function($) {
 	$.fn.invalidate = function(options) {
-		var version = "0.4",
-			opts = $.extend({
+		var version = "0.3",
+			defaults = {
 				'patterns'			: {
 							"email" : new RegExp(/\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})\b/i), 
 							"url"   : new RegExp(/^http:\/\//),
@@ -13,9 +13,9 @@
 				'invalidMsg'		: 'Bitte geben Sie einen g&uuml;ltigen Wert ein!',
 				'successMsg'		: 'OK',
 				'icons'				: true,
-				'live'				: true,
-				'verbose'			: false
-			}, options);
+				'live'				: true
+			}
+		;
 
 		// Example:
 		// {
@@ -26,12 +26,15 @@
 		// 	'successFunction'	: function() {}
 		// }
 
+		opts = options || {};
+		$.extend(opts, defaults);
+
 		return this.each(function() {
 			var $el, $form = $(this),
-				$reqs = $("[required], [pattern], [minlength], [maxlength]", $el);
+				$reqs = $("[required], [pattern], [minlength], [maxlength]", this);
 
 			function log(msg) {
-				if (!window.console || !opts.verbose) 
+				if (! window.console) 
 					return;
 				
 				if (typeof msg !== "string")
@@ -66,11 +69,10 @@
 					max = $el.attr('max') ? parseInt($el.attr('max'), 10) : 0,
 					minlength = $el.attr('minlength') ? parseInt($el.attr('minlength'), 10) : 0,
 					maxlength = $el.attr('maxlength') ? parseInt($el.attr('maxlength'), 10) : 0,
-					msg = $el.attr('data-required') ? $el.attr('data-required') : "",
 					pat = $el.attr('pattern') ? $el.attr('pattern') : "",
 					rel = $el.attr('rel') ? $el.attr('rel') : "",
 					type = $el.attr('type') ? $el.attr('type') : "",
-					val = $el.val();
+					val = $el.val() ? $el.val().trim() : "";
 
 				log("require() called");
 
@@ -120,7 +122,7 @@
 						log("rel: " + rel);
 						var relEl = $("[name='" + rel + "']", $el.get(0).form);
 						log("relEl.length: " + relEl.length);
-						if (relEl.length && val !== relEl.val())
+						if (val !== relEl.val())
 							return showError("invalid");
 					}
 					// RegExp
@@ -148,7 +150,7 @@
 
 				// Match custom RegExp or display validation message for invalid field
 				if (!matches)
-					return showError();
+					return showError("invalid");
 				
 				// Cleanup input
 				if (matches[1])
@@ -158,7 +160,9 @@
 
 			function getMessage(type) {
 				var msg = $el.attr("data-" + type) ? $el.attr("data-" + type) : "";
-				return msg.length ? msg : opts[type + "Msg"];
+				log("msg: " + msg);
+				log("type: " + type);
+				return msg && msg.length ? msg : opts[type + "Msg"];
 			}
 
 			function removeFormat() {
