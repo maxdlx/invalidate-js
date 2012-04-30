@@ -1,7 +1,7 @@
 (function($) {
 	$.fn.invalidate = function(options) {
-		var version = "0.3",
-			defaults = {
+		var version = "0.5",
+			opts = $.extend({
 				'patterns'			: {
 							"email" : new RegExp(/\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})\b/i), 
 							"url"   : new RegExp(/^http:\/\//),
@@ -13,9 +13,9 @@
 				'invalidMsg'		: 'Bitte geben Sie einen g&uuml;ltigen Wert ein!',
 				'successMsg'		: 'OK',
 				'icons'				: true,
-				'live'				: true
-			}
-		;
+				'live'				: true,
+				'verbose'			: false
+			}, options);
 
 		// Example:
 		// {
@@ -26,15 +26,13 @@
 		// 	'successFunction'	: function() {}
 		// }
 
-		opts = options || {};
-		$.extend(opts, defaults);
-
 		return this.each(function() {
-			var $el, $form = $(this),
-				$reqs = $("[required], [pattern], [minlength], [maxlength]", this);
+			var $el, 
+				$form = $(this),
+				$reqs = $form.find("[required], [pattern], [minlength], [maxlength]");
 
 			function log(msg) {
-				if (! window.console) 
+				if (!window.console || !opts.verbose) 
 					return;
 				
 				if (typeof msg !== "string")
