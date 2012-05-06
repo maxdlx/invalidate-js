@@ -1,6 +1,6 @@
 (function($) {
 	$.fn.invalidate = function(options) {
-		var version = "0.5",
+		var version = "0.6",
 			opts = $.extend({
 				'patterns'			: {
 							"email" : new RegExp(/\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})\b/i), 
@@ -210,6 +210,11 @@
 						$("[name^='" + name + "']", this.form).on("click", cb);
 					});
 				}
+				$form.on("invalidate", function() {
+					return validateAll();
+				});
+				// Example:
+				// $("form").trigger("invalidate");
 				$form.submit(function() {
 					var ret = false;
 					try {
