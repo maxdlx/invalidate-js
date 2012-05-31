@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Invalidate-js by maxdlx</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Invalidate-js</h1>
+        <p>HTML(5) Form Validator</p>
+        <p class="view"><a href="https://github.com/maxdlx/invalidate-js">View the Project on GitHub <small>maxdlx/invalidate-js</small></a></p>
+        <ul>
+          <li><a href="https://github.com/maxdlx/invalidate-js/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/maxdlx/invalidate-js/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/maxdlx/invalidate-js">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>invalidate-js</h1>
+
+<p>HTML(5) Form Validator</p>
+
+<h1>Info</h1>
+
+<p>jQuery-Plugin for HTML Form Validation, including numeric and email types</p>
+
+<h1>Installation</h1>
+
+<pre><code>&lt;script type="text/javascript" src="js/jquery.invalidate.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<h1>Events</h1>
+
+<pre><code>`&lt;form&gt;` submit events are registered automatically onDomReady.
+</code></pre>
+
+<p>manual initialization:</p>
+
+<div class="highlight">
+<pre>    <span class="nx">$</span><span class="p">(</span><span class="s2">"form"</span><span class="p">).</span><span class="nx">invalidate</span><span class="p">({</span>
+        <span class="p">...</span> <span class="nx">options</span> <span class="p">...</span>
+    <span class="p">});</span>
+</pre>
+</div>
+
+
+<h1>Options</h1>
+
+<div class="highlight">
+<pre>    <span class="p">{</span>
+        <span class="s1">'errorFunction'</span>     <span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="cm">/* markup function */</span>
+        <span class="s1">'successFunction'</span>   <span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="cm">/* markup function */</span>
+        <span class="s1">'requiredMsg'</span>       <span class="o">:</span> <span class="s1">'Bitte f&amp;uuml;llen Sie das Feld aus!'</span><span class="p">,</span>
+        <span class="s1">'invalidMsg'</span>        <span class="o">:</span> <span class="s1">'Bitte geben Sie einen g&amp;uuml;ltigen Wert ein!'</span><span class="p">,</span>
+        <span class="s1">'successMsg'</span>        <span class="o">:</span> <span class="s1">'OK'</span><span class="p">,</span>
+        <span class="s1">'icons'</span>             <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="s1">'live'</span>              <span class="o">:</span> <span class="kc">true</span>
+    <span class="p">}</span>
+</pre>
+</div>
+
+
+<h1>Customization</h1>
+
+<p>Customizable markup functions:</p>
+
+<ul>
+<li>the default implementation relies on twitter/bootstrap structure (<code>.control-group .error|.success</code>, <code>span.help-inline .error|.success</code>)</li>
+<li>callback options: <code>{ successFunction: function() { ... }, errorFunction : function() { ... } }</code>
+</li>
+</ul><p>Example:</p>
+
+<div class="highlight">
+<pre>    <span class="p">{</span>
+      <span class="s1">'errorFunction'</span>       <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">msg</span><span class="p">,</span> <span class="nx">$el</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">alert</span><span class="p">(</span><span class="nx">msg</span><span class="p">);</span>
+            <span class="nx">$el</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
+        <span class="p">},</span>
+        <span class="s1">'successFunction'</span>   <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span>
+    <span class="p">}</span>
+</pre>
+</div>
+
+
+<h1>Requirements</h1>
+
+<p>jQuery 1.7.2 (current stable - tested)</p>
+
+<h1>Features</h1>
+
+<p>Check for equal elements values, useful for password confirmation</p>
+
+<ul>
+<li><code>input [rel="OTHER_FIELD"]</code></li>
+<li><code>input type="[text|password]" [required] [pattern] [minlength] [maxlength] [data-required="Oops! Missing information."] [data-invalid="Invalid information!"]</code></li>
+<li><code>input type="number" [required] [pattern] [minlength] [maxlength] [min] [max] [data-required="Text if required field is missing."] [data-invalid="Text if validation fails."]</code></li>
+<li><code>input type="checkbox" [required] [data-required="Please read and accept our general terms and conditions to proceed."]</code></li>
+<li><code>input type="checkbox" (multiple checkboxes via &lt;input type="hidden" name="NAME_OF_CHECKBOXES" [required] [data-required="Please select at least one option."]&gt;</code></li>
+<li><code>input type="radio" (multiple radio buttons via: see above)</code></li>
+<li><code>input type="password" [required] [pattern] [minlength] [maxlength] [data-required="Text if required field is missing."] [data-invalid="Text if validation fails."]</code></li>
+<li><code>select [required] [pattern] [data-required="Text if required field is missing."] [data-invalid="Text if validation fails."]</code></li>
+</ul>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/maxdlx">maxdlx</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
