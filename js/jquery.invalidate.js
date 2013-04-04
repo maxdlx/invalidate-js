@@ -3,7 +3,7 @@
 		var version = "0.6",
 			opts = $.extend({
 				'patterns'			: {
-							"email" : new RegExp(/\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4})\b/i), 
+							"email" : new RegExp(/\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6})\b/i), 
 							"url"   : new RegExp(/^http:\/\//),
 							"number": new RegExp(/\d*/)
 				},
@@ -113,7 +113,7 @@
 					// Minlength / Maxlength requirements
 					if (val.length < minlength)
 						return showError("invalid");
-					if (maxlength && val.length > maxlength)
+					if (maxlength > 0 && val.length > maxlength)
 						return showError("invalid");
 					// rel="" Attribute matching, useful for password confirmation
 					if (rel.length) {
@@ -198,19 +198,19 @@
 			// Validate on events: onBlur, onClick, onChange etc.
 			(function bindEvents() {
 				if (opts.live) {
-					$reqs.on("blur", requireListener);
-					$reqs.on("change", requireListener);
-					$reqs.filter(":checkbox, :radio").on("click", requireListener);
-					$reqs.filter("select").on("change", requireListener);
+					$reqs.bind("blur", requireListener);
+					$reqs.bind("change", requireListener);
+					$reqs.filter(":checkbox, :radio").bind("click", requireListener);
+					$reqs.filter("select").bind("change", requireListener);
 					$reqs.filter(":hidden").each(function() {
 						var hiddenInput = this;
 						var cb = function() {
 							require(hiddenInput);
 						}, name = $(this).attr("name");
-						$("[name^='" + name + "']", this.form).on("click", cb);
+						$("[name^='" + name + "']", this.form).bind("click", cb);
 					});
 				}
-				$form.on("invalidate", function() {
+				$form.bind("invalidate", function() {
 					return validateAll();
 				});
 				// Example:
@@ -230,10 +230,8 @@
 		});
 	}
 
-	$(function() {
-		// Skip <form novalidate>
+	// $(function() {
 		// Example: $("form:not([novalidate])").invalidate();
-		$("form").invalidate();
-		
-	});
+		// $("form").invalidate();
+	// });
 }(window.jQuery));
