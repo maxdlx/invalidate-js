@@ -70,7 +70,8 @@
 					pat = $el.attr('pattern') ? $el.attr('pattern') : "",
 					rel = $el.attr('rel') ? $el.attr('rel') : "",
 					type = $el.attr('type') ? $el.attr('type') : "",
-					val = $el.val() ? $el.val().trim() : "";
+					val = $el.val() ? $el.val().trim() : "",
+					pseudoError = $el.attr('data-error') ? $el.attr('data-error') : "";
 
 				log("require() called");
 
@@ -133,6 +134,9 @@
 							if (opts.patterns[typeMatch[1]])
 								return validate(opts.patterns[typeMatch[1]], this);
 						}
+					}
+					if (pseudoError && pseudoError.length) {
+						return showError("error");
 					}
 					return showSuccess();
 				}
