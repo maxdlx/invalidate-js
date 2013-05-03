@@ -29,7 +29,7 @@
 		return this.each(function() {
 			var $el, 
 				$form = $(this),
-				$reqs = $form.find("[required], [pattern], [minlength], [maxlength], [min], [max]");
+				$reqs = $form.find("[required], [pattern], [minlength], [maxlength], [min], [max], [data-error]");
 
 			function log(msg) {
 				if (!window.console || !opts.verbose) 
@@ -214,12 +214,7 @@
 						$("[name^='" + name + "']", this.form).bind("click", cb);
 					});
 				}
-				$form.bind("invalidate", function() {
-					return validateAll();
-				});
-				// Example:
-				// $("form").trigger("invalidate");
-				$form.submit(function() {
+				var callback = function() {
 					var ret = false;
 					try {
 						ret = validateAll();
@@ -229,7 +224,11 @@
 					} finally {
 						return ret;
 					}
-				});
+				};
+				// Example:
+				// $("form").trigger("invalidate");
+				$form.bind("invalidate", callback);
+				$form.submit(callback);
 			})();
 		});
 	}
