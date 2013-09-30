@@ -1,20 +1,22 @@
 (function($) {
 	$.fn.invalidate = function(options) {
-		var version = "0.6",
+		var version = "0.7",
 			opts = $.extend({
 				'patterns'			: {
-							"email" : new RegExp(/\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6})\b/i), 
-							"url"   : new RegExp(/^http:\/\//),
-							"number": new RegExp(/\d*/)
+					"email" : new RegExp(/\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6})\b/i), 
+					"url"   : new RegExp(/^http:\/\//),
+					"number": new RegExp(/\d*/)
 				},
 				'errorFunction'		: null, /* markup function */
 				'successFunction'	: null, /* markup function */
+				'submitFunction'	: null, /* markup function */
 				'requiredMsg'		: 'Bitte f&uuml;llen Sie das Feld aus!',
 				'invalidMsg'		: 'Bitte geben Sie einen g&uuml;ltigen Wert ein!',
 				'successMsg'		: 'OK',
 				'icons'				: true,
 				'live'				: true,
-				'verbose'			: true
+				'verbose'			: true,
+				'showPseudoError'	: false
 			}, options);
 
 		// Example:
@@ -41,11 +43,13 @@
 					console.log(msg);
 			}
 
-			function validateAll() {
+			function validateAll(startupCall) {
+				((!startupCall)?startupCall=false:null);
+
 				var errCount = 0;
 				log("validateAll() called");
 				$reqs.each(function() {
-					if (! require.apply(this))
+					if (! require.apply(this,[startupCall]))
 						errCount ++;
 				});
 				log("validateAll() returns; returnValue: " + errCount);
@@ -58,10 +62,13 @@
 				return require.apply(this);
 			}
 
-			function require(el) {
-				$el = (typeof el  !== "undefined") ? $(el) : $(this);
+			function require(initInvalidation) {
+				$el = $(this);
+				((!initInvalidation)?initInvalidation=false:null);
+
 				var disabled = $el.attr('disabled'),
 					readonly = $el.attr('readonly'),
+					novalidate = $el.attr('data-novalidate'),
 					name = $el.attr('name') + "",
 					min = $el.attr('min') ? parseInt($el.attr('min'), 10) : 0,
 					max = $el.attr('max') ? parseInt($el.attr('max'), 10) : 0,
@@ -70,11 +77,22 @@
 					pat = $el.attr('pattern') ? $el.attr('pattern') : "",
 					rel = $el.attr('rel') ? $el.attr('rel') : "",
 					type = $el.attr('type') ? $el.attr('type') : "",
-					val = $el.val() ? $el.val().trim() : "",
+					val = $el.val() ? $.trim($el.val()) : "",
 					pseudoError = $el.attr('data-error') ? $el.attr('data-error') : "";
 
 				log("require() called");
 
+				// show pseudoErrors only on init
+				if (initInvalidation){
+					if (pseudoError && pseudoError.length) {
+						return showError("error");
+					}
+					return log("require() initInvalidation; returnValue: false") && 0;
+				}
+
+				if(novalidate){
+					return true;
+				}
 				if (disabled || readonly)
 					return log("require() returns; returnValue: false") && 0;
 
@@ -83,7 +101,33 @@
 				if (name.length && (type == "checkbox" || type == "radio" || type == "hidden")) {
 					// Hidden field (useful for multiple checkboxes / radio buttons)
 					if (type == "hidden") {
-						return $("[name^='" + name + "']", $el.get(0).form).filter(":checked, :selected").length ? showSuccess() : showError("required"); // Find related checkboes / radio buttons that are marked
+						// hidden field is checked, so its true
+						if ($(this).is(":checked") || $(this).is(":selected")){
+							return showSuccess();
+						}
+						var rState = true;
+						var rFields = $("[name^='" + name + "']", $el.get(0).form);
+
+						// hidden field is not checked, but the only one, so its false
+						if (rFields.length == 1){
+							return showError("required");
+						}
+
+						// do check for every field
+						rFields.each(function(cObj){
+							// find others
+							if ($el.attr("id") != $(this).attr("id")){
+								if ($(this).attr("type") == "radio" || $(this).attr("type") == "checkbox"){
+									if ((!$(this).is(":checked")) && (!$(this).is(":selected"))){
+										rState = false;
+									}
+								}else if($(this).val() == ""){
+									rState = false;
+								}
+							}
+						});
+						log("HIDDEN: "+name+" - > RES: "+rState);
+						return ((rState)?showSuccess() : showError("required"));
 					}
 
 					// Checkbox / radio button with hidden required field
@@ -97,11 +141,15 @@
 				// Validate patterns
 				if (val.length) {
 					// Radio buttons
-					if (type == "radio" && !$el.is(":checked"))
-						return showError("required");
+					if (type == "radio" && !$el.is(":checked")){
+						showError("required");
+						return true;
+					}
 					// Checkboxes
-					if (type == "checkbox" && !$el.is(":checked"))
-						return showError("required");
+					if (type == "checkbox" && !$el.is(":checked")){
+						showError("required");
+						return true;
+					}
 					// Numeric input
 					if (type == "number" && !parseInt(val, 10))
 						return showError("invalid");
@@ -134,9 +182,6 @@
 							if (opts.patterns[typeMatch[1]])
 								return validate(opts.patterns[typeMatch[1]], this);
 						}
-					}
-					if (pseudoError && pseudoError.length) {
-						return showError("error");
 					}
 					return showSuccess();
 				}
@@ -199,6 +244,11 @@
 				return markup(msg, cssClass) || 1;
 			}
 
+			// show pseudoError only on initValidation
+			if (opts.showPseudoError){
+				validateAll(true);
+			}
+
 			// Validate on events: onBlur, onClick, onChange etc.
 			(function bindEvents() {
 				if (opts.live) {
@@ -209,11 +259,12 @@
 					$reqs.filter(":hidden").each(function() {
 						var hiddenInput = this;
 						var cb = function() {
-							require(hiddenInput);
+							require.apply(hiddenInput);
 						}, name = $(this).attr("name");
 						$("[name^='" + name + "']", this.form).bind("click", cb);
 					});
 				}
+
 				var callback = function() {
 					var ret = false;
 					try {
@@ -222,9 +273,14 @@
 						if (window.console)
 							console.log(err);
 					} finally {
+						if (opts.submitFunction && typeof opts.submitFunction == "function"){
+							return opts.submitFunction(ret,$form);
+							//ret = opts.submitFunction(ret,$form);
+						}
 						return ret;
 					}
 				};
+				
 				// Example:
 				// $("form").trigger("invalidate");
 				$form.bind("invalidate", callback);
